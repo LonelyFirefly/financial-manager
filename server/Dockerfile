@@ -32,7 +32,7 @@ RUN npm ci --only=production
 COPY --from=builder /app/dist ./dist
 
 # Expose API port
-EXPOSE 3000
+EXPOSE 8000
 
 # Start the server
 CMD ["npm", "run", "start:prod"] 

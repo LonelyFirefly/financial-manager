@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-const CLIENT_URL = 'http://localhost:3000';
+const CLIENT_URL = 'http://localhost';
 
 const SERVER_PORT = 8000;
 

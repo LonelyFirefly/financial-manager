@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    expose:
+      - "8000"
+    environment:
+      - NODE_ENV=production
+      - CLIENT_URL=http://localhost
+      - PORT=8000
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge 

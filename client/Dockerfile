@@ -1,4 +1,4 @@
-# Stage 1: Build
+# Build stage
 FROM node:20-alpine AS builder
 
 # Set working directory
@@ -13,20 +13,28 @@ RUN npm ci
 # Copy all other source code files
 COPY . .
 
-# Build the applicatioXn
+# Build the application
 RUN npm run build
 
-# Stage 2: Production
-FROM nginx:alpine
+# Production stage - copy built files to volume
+FROM alpine:latest
 
-# Copy the built assets from builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Install bash for shell operations
+RUN apk add --no-cache bash rsync
 
-# Copy nginx configuration (we'll create this next)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Create directory structure
+WORKDIR /app
 
-# Expose port 80
-EXPOSE 80
+# Copy built files from builder stage
+COPY --from=builder /app/dist ./dist
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Create a script to copy files to the volume and keep container running
+RUN echo '#!/bin/bash' > /entrypoint.sh && \
+    echo 'echo "Copying built files to volume..."' >> /entrypoint.sh && \
+    echo 'rsync -av /app/dist/ /app/dist/' >> /entrypoint.sh && \
+    echo 'echo "Files copied successfully."' >> /entrypoint.sh && \
+    echo 'echo "Keeping container alive..."' >> /entrypoint.sh && \
+    echo 'tail -f /dev/null' >> /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]

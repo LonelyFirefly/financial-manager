@@ -1,20 +1,15 @@
-version: '3.8'
-
 services:
+  # Frontend build container
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
-    ports:
-      - "80:80"
-    depends_on:
-      - server
-    environment:
-      - VITE_API_URL=http://localhost:8000
-      - NODE_ENV=production
+    volumes:
+      - client_dist:/app/dist
     networks:
       - app-network
 
+  # Backend API server
   server:
     build:
       context: ./server
@@ -27,6 +22,24 @@ services:
       - PORT=8000
     networks:
       - app-network
+
+  # Nginx reverse proxy and static file server
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - client_dist:/usr/share/nginx/html
+    depends_on:
+      - client
+      - server
+    networks:
+      - app-network
+
+volumes:
+  client_dist:
 
 networks:
   app-network:

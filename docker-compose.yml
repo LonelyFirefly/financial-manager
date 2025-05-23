@@ -18,7 +18,7 @@ services:
       - "8000"
     environment:
       - NODE_ENV=production
-      - CLIENT_URL=http://localhost
+      - CLIENT_URL=https://localhost
       - PORT=8000
     networks:
       - app-network
@@ -30,6 +30,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - client_dist:/usr/share/nginx/html
     depends_on:

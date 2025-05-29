@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import 'reflect-metadata';
 
 const CLIENT_URL = process.env.CLIENT_URL;
 const PORT = process.env.PORT || 8000;

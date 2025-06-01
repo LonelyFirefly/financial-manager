@@ -1,5 +1,6 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { categoriesService, CreateCategoryRequest } from '@/services'
+import { queryClient } from '@/api'
 
 // Query Keys
 export const categoryQueryKeys = {
@@ -11,7 +12,7 @@ export const categoryQueryKeys = {
 }
 
 export function useCategories() {
-  const {
+  const { 
     data: categories = [],
     error,
     isLoading: loading,
@@ -29,8 +30,6 @@ export function useCategories() {
 }
 
 export function useCreateCategory() {
-  const queryClient = useQueryClient()
-
   return useMutation({
     mutationFn: categoriesService.createCategory,
     onSuccess: () => {
@@ -44,8 +43,6 @@ export function useCreateCategory() {
 }
 
 export function useUpdateCategory() {
-  const queryClient = useQueryClient()
-
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: CreateCategoryRequest }) =>
       categoriesService.updateCategory(id, data),
@@ -59,8 +56,6 @@ export function useUpdateCategory() {
 }
 
 export function useDeleteCategory() {
-  const queryClient = useQueryClient()
-
   return useMutation({
     mutationFn: categoriesService.deleteCategory,
     onSuccess: () => {

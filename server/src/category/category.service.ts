@@ -53,4 +53,18 @@ export class CategoryService {
   remove(id: number) {
     return this.categoryRepository.delete(id);
   }
+
+  async getTotalCategoryValue(filters?: {
+    isArchived?: boolean;
+  }): Promise<number> {
+    const { isArchived = false } = filters || {};
+
+    const categories = await this.categoryRepository.find({
+      where: {
+        isArchived,
+      },
+    });
+
+    return categories.reduce((acc, category) => acc + category.value, 0);
+  }
 }

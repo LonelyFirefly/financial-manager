@@ -11,6 +11,8 @@ export const categoryQueryKeys = {
   detail: (id: string) => [...categoryQueryKeys.details(), id] as const,
   byStatus: (isArchived: boolean) => [...categoryQueryKeys.all, 'byStatus', isArchived] as const,
   search: (query: string) => [...categoryQueryKeys.all, 'search', query] as const,
+  count: () => [...categoryQueryKeys.all, 'count'] as const,
+  countByStatus: (isArchived: boolean) => [...categoryQueryKeys.all, 'count', 'byStatus', isArchived] as const,
 }
 
 export function useCategories() {
@@ -83,6 +85,42 @@ export function useSearchCategories(query: string) {
   return {
     categories,
     error: isError ? (error?.message || 'Failed to search categories') : null,
+    loading
+  }
+}
+
+export function useCategoriesCount() {
+  const { 
+    data: count = 0,
+    error,
+    isLoading: loading,
+    isError
+  } = useQuery({
+    queryKey: categoryQueryKeys.count(),
+    queryFn: categoriesService.getCategoriesCount,
+  })
+
+  return {
+    count,
+    error: isError ? (error?.message || 'Failed to fetch categories count') : null,
+    loading
+  }
+}
+
+export function useCategoriesCountByStatus(isArchived: boolean) {
+  const { 
+    data: count = 0,
+    error,
+    isLoading: loading,
+    isError
+  } = useQuery({
+    queryKey: categoryQueryKeys.countByStatus(isArchived),
+    queryFn: () => categoriesService.getCategoriesCountByStatus(isArchived),
+  })
+
+  return {
+    count,
+    error: isError ? (error?.message || 'Failed to fetch categories count by status') : null,
     loading
   }
 }

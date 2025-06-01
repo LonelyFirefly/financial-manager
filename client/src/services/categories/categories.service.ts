@@ -37,6 +37,16 @@ class CategoriesService {
         const response = await api.get<Category[]>(RESOURCES.SEARCH(query));
         return response.data;
     }
+
+    async getCategoriesCount(): Promise<number> {
+        const response = await api.get<{ count: number }>(RESOURCES.COUNT);
+        return response.data.count;
+    }
+
+    async getCategoriesCountByStatus(isArchived: boolean): Promise<number> {
+        const response = await api.get<{ count: number }>(RESOURCES.COUNT_BY_STATUS(isArchived));
+        return response.data.count;
+    }
 }
 
 export const categoriesService = new CategoriesService(); 

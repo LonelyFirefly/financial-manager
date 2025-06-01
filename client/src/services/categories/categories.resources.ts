@@ -19,4 +19,8 @@ export const RESOURCES = {
   // Query endpoints
   BY_STATUS: (isArchived: boolean) => `/category?isArchived=${isArchived}`,
   SEARCH: (query: string) => `/category/search?q=${encodeURIComponent(query)}`,
+  
+  // Count endpoints
+  COUNT: '/category/count',
+  COUNT_BY_STATUS: (isArchived: boolean) => `/category/count?isArchived=${isArchived}`,
 } as const 

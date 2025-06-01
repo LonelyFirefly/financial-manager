@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -28,6 +29,11 @@ export class CategoryController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoryService.findOne(+id);
+  }
+
+  @Get('total-value')
+  totalValue(@Query('isArchived') isArchived: boolean = false) {
+    return this.categoryService.getTotalCategoryValue({ isArchived });
   }
 
   @Patch(':id')

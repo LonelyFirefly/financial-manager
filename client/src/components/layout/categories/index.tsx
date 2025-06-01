@@ -1,7 +1,8 @@
-import { useCategories } from '@/hooks';
+import { useCategories, useCategoriesCount } from '@/hooks';
 
 export function Categories() {
   const { categories, error, loading } = useCategories();
+  const { count: categoriesCount } = useCategoriesCount();
   console.log('LOGGING: ', categories);
 
   if (loading) {
@@ -15,11 +16,33 @@ export function Categories() {
   return (
     <div>
       <h1>Categories</h1>
-      <ul>
-        {categories.map((category) => (
-          <li key={category.id}>{category.name}</li>
-        ))}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Value</th>
+            <th>Total Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {categories.map((category) => (
+            <tr key={category.id}>
+              <td>{category.name}</td>
+              <td>{category.value}</td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={2}>Total Value</td>
+            <td>{categoriesCount}</td>
+            <td>
+              <button>Edit</button>
+              <button>Delete</button>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
     </div>
   );
 }

@@ -1,49 +1,56 @@
 import { Injectable } from '@nestjs/common';
+import { Category as CategoryRepository } from './entities/category.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { FindCategoryDto } from './dto/find-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import {
-  Category,
-  EssentialCategory,
-  NonEssentialCategory,
-} from '../models/category';
 
-const DEFAULT_CATEGORIES: Category[] = [
-  EssentialCategory.Maintenance,
-  EssentialCategory.Transport,
-  EssentialCategory.Groceries,
-  EssentialCategory.House,
-  EssentialCategory.HouseUtilities,
-  EssentialCategory.PersonalCareAndMedicine,
-  EssentialCategory.Sport,
-  NonEssentialCategory.Entertainment,
-  NonEssentialCategory.EatingOut,
-  NonEssentialCategory.Clothes,
-];
+// const DEFAULT_CATEGORIES: Category[] = [
+//   EssentialCategory.Maintenance,
+//   EssentialCategory.Transport,
+//   EssentialCategory.Groceries,
+//   EssentialCategory.House,
+//   EssentialCategory.HouseUtilities,
+//   EssentialCategory.PersonalCareAndMedicine,
+//   EssentialCategory.Sport,
+//   NonEssentialCategory.Entertainment,
+//   NonEssentialCategory.EatingOut,
+//   NonEssentialCategory.Clothes,
+// ];
 
 @Injectable()
 export class CategoryService {
-  private categories: Category[] = [...DEFAULT_CATEGORIES];
+  // private categories: Category[] = [...DEFAULT_CATEGORIES];
+  constructor(
+    @InjectRepository(CategoryRepository)
+    private categoryRepository: Repository<CategoryRepository>,
+  ) {}
 
-  create(createCategoryDto: CreateCategoryDto) {
-    this.categories.push(createCategoryDto.text);
-    return this.categories;
+  async create(createCategoryDto: CreateCategoryDto) {
+    console.log('LOGGING SERVICE: ', createCategoryDto);
+    return this.categoryRepository.save(createCategoryDto);
   }
 
-  findAll() {
-    return this.categories;
+  findAll(findCategoryDto: FindCategoryDto = { isArchived: false }) {
+    return this.categoryRepository.find({
+      where: findCategoryDto,
+    });
   }
 
   findOne(id: number) {
-    return this.categories[id];
+    return this.categoryRepository.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    this.categories[id] = updateCategoryDto.text;
-    return this.categories;
+    return this.categoryRepository.update(id, updateCategoryDto);
   }
 
   remove(id: number) {
-    this.categories.splice(id, 1);
-    return this.categories;
+    return this.categoryRepository.delete(id);
   }
 }

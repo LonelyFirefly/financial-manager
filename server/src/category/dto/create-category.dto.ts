@@ -1,5 +1,7 @@
 import { Category } from 'src/models/category';
 
 export class CreateCategoryDto {
-  text: Category;
+  readonly name: Category;
+  readonly description: string;
+  readonly isArchived: boolean;
 }

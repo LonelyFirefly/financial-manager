@@ -2,6 +2,7 @@ import { useCategories } from './hooks/use-categories';
 
 export function Categories() {
   const { categories, error, loading } = useCategories();
+  console.log('LOGGING: ', categories);
 
   if (loading) {
     return <div>Loading categories...</div>;
@@ -13,10 +14,10 @@ export function Categories() {
 
   return (
     <div>
-      <h1>Main</h1>
+      <h1>Categories</h1>
       <ul>
         {categories.map((category) => (
-          <li key={category}>{category}</li>
+          <li key={category.id}>{category.name}</li>
         ))}
       </ul>
     </div>

@@ -1,8 +1,7 @@
-namespace Category {
-    export interface Item {
+    export interface Category {
         id: string;
         name: string;
         description: string;
-        image: string;
+        isArchived?: boolean;
+        image?: string;
     }
-}

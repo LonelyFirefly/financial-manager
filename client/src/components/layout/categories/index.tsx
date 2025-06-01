@@ -1,4 +1,4 @@
-import { useCategories } from './hooks/use-categories';
+import { useCategories } from '@/hooks';
 
 export function Categories() {
   const { categories, error, loading } = useCategories();

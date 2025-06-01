@@ -14,6 +14,10 @@ export class Category {
   @Column('decimal', { precision: 10, scale: 2, default: 0 })
   value: number;
 
+  /**
+   * @TODO:
+   * make an endpoing to get the total value of essential or non-essential categories
+   */
   @Column('enum', {
     enum: ['essential', 'non-essential'],
     default: 'non-essential',

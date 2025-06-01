@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { FindCategoryDto } from './dto/find-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { isArray } from 'src/utils/array';
 
 // const DEFAULT_CATEGORIES: Category[] = [
 //   EssentialCategory.Maintenance,
@@ -27,8 +28,13 @@ export class CategoryService {
     private categoryRepository: Repository<CategoryRepository>,
   ) {}
 
-  async create(createCategoryDto: CreateCategoryDto) {
-    console.log('LOGGING SERVICE: ', createCategoryDto);
+  async create(
+    createCategoryDto: CreateCategoryDto | CreateCategoryDto[],
+  ): Promise<CategoryRepository | CategoryRepository[]> {
+    if (isArray(createCategoryDto)) {
+      return this.categoryRepository.save(createCategoryDto);
+    }
+
     return this.categoryRepository.save(createCategoryDto);
   }
 

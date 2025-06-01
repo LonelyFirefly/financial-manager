@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
-import { categoriesService, CreateCategoryDto } from '@/services'
+import { CategoryView, CreateCategoryDto } from '@/store'
 import { queryClient } from '@/api'
 
 // Query Keys
@@ -13,6 +13,8 @@ export const categoryQueryKeys = {
   search: (query: string) => [...categoryQueryKeys.all, 'search', query] as const,
   count: () => [...categoryQueryKeys.all, 'count'] as const,
   countByStatus: (isArchived: boolean) => [...categoryQueryKeys.all, 'count', 'byStatus', isArchived] as const,
+  summary: () => [...categoryQueryKeys.all, 'summary'] as const,
+  stats: () => [...categoryQueryKeys.all, 'stats'] as const,
 }
 
 export function useCategories() {
@@ -23,12 +25,48 @@ export function useCategories() {
     isError
   } = useQuery({
     queryKey: categoryQueryKeys.all,
-    queryFn: categoriesService.getCategories,
+    queryFn: CategoryView.getCategories,
   })
 
   return {
     categories,
     error: isError ? (error?.message || 'Failed to fetch categories') : null,
+    loading
+  }
+}
+
+export function useCategorySummary() {
+  const { 
+    data: summary,
+    error,
+    isLoading: loading,
+    isError
+  } = useQuery({
+    queryKey: categoryQueryKeys.summary(),
+    queryFn: CategoryView.getCategorySummary,
+  })
+  
+  return {
+    summary,
+    error: isError ? (error?.message || 'Failed to fetch category summary') : null,
+    loading
+  }
+}
+
+export function useCategoryStats() {
+  const { 
+    data: stats,
+    error,
+    isLoading: loading,
+    isError
+  } = useQuery({
+    queryKey: categoryQueryKeys.stats(),
+    queryFn: CategoryView.getCategoryStats,
+  })
+  
+  return {
+    stats,
+    error: isError ? (error?.message || 'Failed to fetch category stats') : null,
     loading
   }
 }
@@ -41,7 +79,7 @@ export function useCategory(id: string) {
     isError
   } = useQuery({
     queryKey: categoryQueryKeys.detail(id),
-    queryFn: () => categoriesService.getCategoryById(id),
+    queryFn: () => CategoryView.getCategoryById(id),
     enabled: !!id,
   })
 
@@ -60,7 +98,7 @@ export function useCategoriesByStatus(isArchived: boolean) {
     isError
   } = useQuery({
     queryKey: categoryQueryKeys.byStatus(isArchived),
-    queryFn: () => categoriesService.getCategoriesByStatus(isArchived),
+    queryFn: () => CategoryView.getCategoriesByStatus(isArchived),
   })
 
   return {
@@ -78,7 +116,7 @@ export function useSearchCategories(query: string) {
     isError
   } = useQuery({
     queryKey: categoryQueryKeys.search(query),
-    queryFn: () => categoriesService.searchCategories(query),
+    queryFn: () => CategoryView.searchCategories(query),
     enabled: query.length > 0,
   })
 
@@ -97,7 +135,7 @@ export function useCategoriesCount() {
     isError
   } = useQuery({
     queryKey: categoryQueryKeys.count(),
-    queryFn: categoriesService.getCategoriesCount,
+    queryFn: CategoryView.getCategoriesCount,
   })
 
   return {
@@ -115,7 +153,7 @@ export function useCategoriesCountByStatus(isArchived: boolean) {
     isError
   } = useQuery({
     queryKey: categoryQueryKeys.countByStatus(isArchived),
-    queryFn: () => categoriesService.getCategoriesCountByStatus(isArchived),
+    queryFn: () => CategoryView.getCategoriesCountByStatus(isArchived),
   })
 
   return {
@@ -127,7 +165,7 @@ export function useCategoriesCountByStatus(isArchived: boolean) {
 
 export function useCreateCategory() {
   return useMutation({
-    mutationFn: categoriesService.createCategory,
+    mutationFn: CategoryView.createCategory,
     onSuccess: () => {
       // Invalidate and refetch categories after successful creation
       queryClient.invalidateQueries({ queryKey: categoryQueryKeys.all })
@@ -138,10 +176,23 @@ export function useCreateCategory() {
   })
 }
 
+export function useCreateCategories() {
+  return useMutation({
+    mutationFn: CategoryView.createCategories,
+    onSuccess: () => {
+      // Invalidate and refetch categories after successful bulk creation
+      queryClient.invalidateQueries({ queryKey: categoryQueryKeys.all })
+    },
+    onError: (error) => {
+      console.error('Failed to create categories:', error)
+    }
+  })
+}
+
 export function useUpdateCategory() {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: CreateCategoryDto }) =>
-      categoriesService.updateCategory(id, data),
+      CategoryView.updateCategory(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: categoryQueryKeys.all })
     },
@@ -153,7 +204,7 @@ export function useUpdateCategory() {
 
 export function useDeleteCategory() {
   return useMutation({
-    mutationFn: categoriesService.deleteCategory,
+    mutationFn: CategoryView.deleteCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: categoryQueryKeys.all })
     },

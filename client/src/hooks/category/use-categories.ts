@@ -1,42 +1,46 @@
-import { useQuery, useMutation } from '@tanstack/react-query'
-import { categoryView } from '@/store'
-import { queryClient } from '@/api'
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { categoryView } from '@/store';
+import { queryClient } from '@/api';
 
 // Query Keys
 export const categoryQueryKeys = {
   all: ['categories'] as const,
   lists: () => [...categoryQueryKeys.all, 'list'] as const,
-  list: (filters: string) => [...categoryQueryKeys.lists(), { filters }] as const,
+  list: (filters: string) =>
+    [...categoryQueryKeys.lists(), { filters }] as const,
   details: () => [...categoryQueryKeys.all, 'detail'] as const,
   detail: (id: string) => [...categoryQueryKeys.details(), id] as const,
-  byStatus: (isArchived: boolean) => [...categoryQueryKeys.all, 'byStatus', isArchived] as const,
-  search: (query: string) => [...categoryQueryKeys.all, 'search', query] as const,
+  byStatus: (isArchived: boolean) =>
+    [...categoryQueryKeys.all, 'byStatus', isArchived] as const,
+  search: (query: string) =>
+    [...categoryQueryKeys.all, 'search', query] as const,
   count: () => [...categoryQueryKeys.all, 'count'] as const,
-  countByStatus: (isArchived: boolean) => [...categoryQueryKeys.all, 'count', 'byStatus', isArchived] as const,
+  countByStatus: (isArchived: boolean) =>
+    [...categoryQueryKeys.all, 'count', 'byStatus', isArchived] as const,
   summary: () => [...categoryQueryKeys.all, 'summary'] as const,
   stats: () => [...categoryQueryKeys.all, 'stats'] as const,
-}
+};
 
 export function useCategories() {
-  const { 
+  const {
     data: categories = [],
     error,
     isLoading: loading,
-    isError
-  } = useQuery({
+    isError,
+  } = useQuery<Category[], Error>({
     queryKey: categoryQueryKeys.all,
     queryFn: categoryView.getCategories,
-  })
+  });
 
   return {
     categories,
-    error: isError ? (error?.message || 'Failed to fetch categories') : null,
-    loading
-  }
+    error: isError ? error?.message || 'Failed to fetch categories' : null,
+    loading,
+  };
 }
 
 // export function useCategorySummary() {
-//   const { 
+//   const {
 //     data: summary,
 //     error,
 //     isLoading: loading,
@@ -45,7 +49,7 @@ export function useCategories() {
 //     queryKey: categoryQueryKeys.summary(),
 //     queryFn: categoryView.getCategorySummary,
 //   })
-  
+
 //   return {
 //     summary,
 //     error: isError ? (error?.message || 'Failed to fetch category summary') : null,
@@ -54,7 +58,7 @@ export function useCategories() {
 // }
 
 // export function useCategoryStats() {
-//   const { 
+//   const {
 //     data: stats,
 //     error,
 //     isLoading: loading,
@@ -63,7 +67,7 @@ export function useCategories() {
 //     queryKey: categoryQueryKeys.stats(),
 //     queryFn: categoryView.getCategoryStats,
 //   })
-  
+
 //   return {
 //     stats,
 //     error: isError ? (error?.message || 'Failed to fetch category stats') : null,
@@ -72,7 +76,7 @@ export function useCategories() {
 // }
 
 // export function useCategory(id: string) {
-//   const { 
+//   const {
 //     data: category,
 //     error,
 //     isLoading: loading,
@@ -91,7 +95,7 @@ export function useCategories() {
 // }
 
 // export function useCategoriesByStatus(isArchived: boolean) {
-//   const { 
+//   const {
 //     data: categories = [],
 //     error,
 //     isLoading: loading,
@@ -109,7 +113,7 @@ export function useCategories() {
 // }
 
 // export function useSearchCategories(query: string) {
-//   const { 
+//   const {
 //     data: categories = [],
 //     error,
 //     isLoading: loading,
@@ -128,7 +132,7 @@ export function useCategories() {
 // }
 
 // export function useCategoriesCount() {
-//   const { 
+//   const {
 //     data: count = 0,
 //     error,
 //     isLoading: loading,
@@ -146,7 +150,7 @@ export function useCategories() {
 // }
 
 // export function useCategoriesCountByStatus(isArchived: boolean) {
-//   const { 
+//   const {
 //     data: count = 0,
 //     error,
 //     isLoading: loading,
@@ -206,10 +210,10 @@ export function useDeleteCategory() {
   return useMutation({
     mutationFn: categoryView.deleteCategory,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: categoryQueryKeys.all })
+      queryClient.invalidateQueries({ queryKey: categoryQueryKeys.all });
     },
-    onError: (error) => {
-      console.error('Failed to delete category:', error)
-    }
-  })
-} 
+    onError: error => {
+      console.error('Failed to delete category:', error);
+    },
+  });
+}

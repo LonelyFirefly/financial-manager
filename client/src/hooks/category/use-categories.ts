@@ -1,6 +1,7 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { categoryView } from '@/store';
 import { queryClient } from '@/api';
+import { CategoryClientModel } from '@/models';
 
 // Query Keys
 export const categoryQueryKeys = {
@@ -27,7 +28,7 @@ export function useCategories() {
     error,
     isLoading: loading,
     isError,
-  } = useQuery<Category[], Error>({
+  } = useQuery<CategoryClientModel.Category[], Error>({
     queryKey: categoryQueryKeys.all,
     queryFn: categoryView.getCategories,
   });

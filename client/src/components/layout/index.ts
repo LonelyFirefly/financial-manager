@@ -1,2 +1,2 @@
 export * from './categories';
-export { CategoryTable } from './categories/CategoryTable';
+export * from './category';

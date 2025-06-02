@@ -1,5 +1,5 @@
 export namespace CategoryApiModel {
-    export interface Category {
+  export interface Category {
     id: string;
     name: string;
     description: string;
@@ -7,6 +7,5 @@ export namespace CategoryApiModel {
     type: 'essential' | 'non-essential';
     isArchived?: boolean;
     image?: string;
-    }
+  }
 }
-

@@ -39,7 +39,7 @@ export function CategoryTable({
               <tr key={category.id}>
                 <td className="category-name">{category.name}</td>
                 <td className="category-description">{category.description}</td>
-                <td className="category-value">${category.value.toFixed(2)}</td>
+                <td className="category-value">${category.value}</td>
                 <td className="category-actions">
                   <button 
                     className="btn-edit"
@@ -61,7 +61,7 @@ export function CategoryTable({
         <tfoot>
           <tr className="total-row">
             <td colSpan={2}><strong>Total {title}</strong></td>
-            <td className="total-value"><strong>${totalValue.toFixed(2)}</strong></td>
+            <td className="total-value"><strong>${totalValue}</strong></td>
             <td></td>
           </tr>
         </tfoot>

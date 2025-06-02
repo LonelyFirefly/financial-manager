@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
-import { CategoryView, CreateCategoryDto } from '@/store'
+import { categoryView } from '@/store'
 import { queryClient } from '@/api'
 
 // Query Keys
@@ -25,7 +25,7 @@ export function useCategories() {
     isError
   } = useQuery({
     queryKey: categoryQueryKeys.all,
-    queryFn: CategoryView.getCategories,
+    queryFn: categoryView.getCategories,
   })
 
   return {
@@ -35,176 +35,176 @@ export function useCategories() {
   }
 }
 
-export function useCategorySummary() {
-  const { 
-    data: summary,
-    error,
-    isLoading: loading,
-    isError
-  } = useQuery({
-    queryKey: categoryQueryKeys.summary(),
-    queryFn: CategoryView.getCategorySummary,
-  })
+// export function useCategorySummary() {
+//   const { 
+//     data: summary,
+//     error,
+//     isLoading: loading,
+//     isError
+//   } = useQuery({
+//     queryKey: categoryQueryKeys.summary(),
+//     queryFn: categoryView.getCategorySummary,
+//   })
   
-  return {
-    summary,
-    error: isError ? (error?.message || 'Failed to fetch category summary') : null,
-    loading
-  }
-}
+//   return {
+//     summary,
+//     error: isError ? (error?.message || 'Failed to fetch category summary') : null,
+//     loading
+//   }
+// }
 
-export function useCategoryStats() {
-  const { 
-    data: stats,
-    error,
-    isLoading: loading,
-    isError
-  } = useQuery({
-    queryKey: categoryQueryKeys.stats(),
-    queryFn: CategoryView.getCategoryStats,
-  })
+// export function useCategoryStats() {
+//   const { 
+//     data: stats,
+//     error,
+//     isLoading: loading,
+//     isError
+//   } = useQuery({
+//     queryKey: categoryQueryKeys.stats(),
+//     queryFn: categoryView.getCategoryStats,
+//   })
   
-  return {
-    stats,
-    error: isError ? (error?.message || 'Failed to fetch category stats') : null,
-    loading
-  }
-}
+//   return {
+//     stats,
+//     error: isError ? (error?.message || 'Failed to fetch category stats') : null,
+//     loading
+//   }
+// }
 
-export function useCategory(id: string) {
-  const { 
-    data: category,
-    error,
-    isLoading: loading,
-    isError
-  } = useQuery({
-    queryKey: categoryQueryKeys.detail(id),
-    queryFn: () => CategoryView.getCategoryById(id),
-    enabled: !!id,
-  })
+// export function useCategory(id: string) {
+//   const { 
+//     data: category,
+//     error,
+//     isLoading: loading,
+//     isError
+//   } = useQuery({
+//     queryKey: categoryQueryKeys.detail(id),
+//     queryFn: () => categoryView.getCategoryById(id),
+//     enabled: !!id,
+//   })
 
-  return {
-    category,
-    error: isError ? (error?.message || 'Failed to fetch category') : null,
-    loading
-  }
-}
+//   return {
+//     category,
+//     error: isError ? (error?.message || 'Failed to fetch category') : null,
+//     loading
+//   }
+// }
 
-export function useCategoriesByStatus(isArchived: boolean) {
-  const { 
-    data: categories = [],
-    error,
-    isLoading: loading,
-    isError
-  } = useQuery({
-    queryKey: categoryQueryKeys.byStatus(isArchived),
-    queryFn: () => CategoryView.getCategoriesByStatus(isArchived),
-  })
+// export function useCategoriesByStatus(isArchived: boolean) {
+//   const { 
+//     data: categories = [],
+//     error,
+//     isLoading: loading,
+//     isError
+//   } = useQuery({
+//     queryKey: categoryQueryKeys.byStatus(isArchived),
+//     queryFn: () => categoryView.getCategoriesByStatus(isArchived),
+//   })
 
-  return {
-    categories,
-    error: isError ? (error?.message || 'Failed to fetch categories by status') : null,
-    loading
-  }
-}
+//   return {
+//     categories,
+//     error: isError ? (error?.message || 'Failed to fetch categories by status') : null,
+//     loading
+//   }
+// }
 
-export function useSearchCategories(query: string) {
-  const { 
-    data: categories = [],
-    error,
-    isLoading: loading,
-    isError
-  } = useQuery({
-    queryKey: categoryQueryKeys.search(query),
-    queryFn: () => CategoryView.searchCategories(query),
-    enabled: query.length > 0,
-  })
+// export function useSearchCategories(query: string) {
+//   const { 
+//     data: categories = [],
+//     error,
+//     isLoading: loading,
+//     isError
+//   } = useQuery({
+//     queryKey: categoryQueryKeys.search(query),
+//     queryFn: () => categoryView.searchCategories(query),
+//     enabled: query.length > 0,
+//   })
 
-  return {
-    categories,
-    error: isError ? (error?.message || 'Failed to search categories') : null,
-    loading
-  }
-}
+//   return {
+//     categories,
+//     error: isError ? (error?.message || 'Failed to search categories') : null,
+//     loading
+//   }
+// }
 
-export function useCategoriesCount() {
-  const { 
-    data: count = 0,
-    error,
-    isLoading: loading,
-    isError
-  } = useQuery({
-    queryKey: categoryQueryKeys.count(),
-    queryFn: CategoryView.getCategoriesCount,
-  })
+// export function useCategoriesCount() {
+//   const { 
+//     data: count = 0,
+//     error,
+//     isLoading: loading,
+//     isError
+//   } = useQuery({
+//     queryKey: categoryQueryKeys.count(),
+//     queryFn: categoryView.getCategoriesCount,
+//   })
 
-  return {
-    count,
-    error: isError ? (error?.message || 'Failed to fetch categories count') : null,
-    loading
-  }
-}
+//   return {
+//     count,
+//     error: isError ? (error?.message || 'Failed to fetch categories count') : null,
+//     loading
+//   }
+// }
 
-export function useCategoriesCountByStatus(isArchived: boolean) {
-  const { 
-    data: count = 0,
-    error,
-    isLoading: loading,
-    isError
-  } = useQuery({
-    queryKey: categoryQueryKeys.countByStatus(isArchived),
-    queryFn: () => CategoryView.getCategoriesCountByStatus(isArchived),
-  })
+// export function useCategoriesCountByStatus(isArchived: boolean) {
+//   const { 
+//     data: count = 0,
+//     error,
+//     isLoading: loading,
+//     isError
+//   } = useQuery({
+//     queryKey: categoryQueryKeys.countByStatus(isArchived),
+//     queryFn: () => categoryView.getCategoriesCountByStatus(isArchived),
+//   })
 
-  return {
-    count,
-    error: isError ? (error?.message || 'Failed to fetch categories count by status') : null,
-    loading
-  }
-}
+//   return {
+//     count,
+//     error: isError ? (error?.message || 'Failed to fetch categories count by status') : null,
+//     loading
+//   }
+// }
 
-export function useCreateCategory() {
-  return useMutation({
-    mutationFn: CategoryView.createCategory,
-    onSuccess: () => {
-      // Invalidate and refetch categories after successful creation
-      queryClient.invalidateQueries({ queryKey: categoryQueryKeys.all })
-    },
-    onError: (error) => {
-      console.error('Failed to create category:', error)
-    }
-  })
-}
+// export function useCreateCategory() {
+//   return useMutation({
+//     mutationFn: categoryView.createCategory,
+//     onSuccess: () => {
+//       // Invalidate and refetch categories after successful creation
+//       queryClient.invalidateQueries({ queryKey: categoryQueryKeys.all })
+//     },
+//     onError: (error) => {
+//       console.error('Failed to create category:', error)
+//     }
+//   })
+// }
 
-export function useCreateCategories() {
-  return useMutation({
-    mutationFn: CategoryView.createCategories,
-    onSuccess: () => {
-      // Invalidate and refetch categories after successful bulk creation
-      queryClient.invalidateQueries({ queryKey: categoryQueryKeys.all })
-    },
-    onError: (error) => {
-      console.error('Failed to create categories:', error)
-    }
-  })
-}
+// export function useCreateCategories() {
+//   return useMutation({
+//     mutationFn: categoryView.createCategories,
+//     onSuccess: () => {
+//       // Invalidate and refetch categories after successful bulk creation
+//       queryClient.invalidateQueries({ queryKey: categoryQueryKeys.all })
+//     },
+//     onError: (error) => {
+//       console.error('Failed to create categories:', error)
+//     }
+//   })
+// }
 
-export function useUpdateCategory() {
-  return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: CreateCategoryDto }) =>
-      CategoryView.updateCategory(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: categoryQueryKeys.all })
-    },
-    onError: (error) => {
-      console.error('Failed to update category:', error)
-    }
-  })
-}
+// export function useUpdateCategory() {
+//   return useMutation({
+//     mutationFn: ({ id, data }: { id: string; data: CreateCategoryDto }) =>
+//       categoryView.updateCategory(id, data),
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({ queryKey: categoryQueryKeys.all })
+//     },
+//     onError: (error) => {
+//       console.error('Failed to update category:', error)
+//     }
+//   })
+// }
 
 export function useDeleteCategory() {
   return useMutation({
-    mutationFn: CategoryView.deleteCategory,
+    mutationFn: categoryView.deleteCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: categoryQueryKeys.all })
     },

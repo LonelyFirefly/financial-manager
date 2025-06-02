@@ -33,6 +33,8 @@ export function Categories() {
     };
   }, [categories]);
 
+
+
   // console.log('essentialCategories', essentialCategories);
   // console.log('nonEssentialCategories', nonEssentialCategories);
   // console.log('essentialTotal', essentialTotal);
@@ -73,15 +75,15 @@ export function Categories() {
       <div className="categories-summary">
         <div className="summary-card">
           <h3>Essential Total</h3>
-          <p className="total-amount essential">${essentialTotal.toFixed(2)}</p>
+          <p className="total-amount essential">${essentialTotal}</p>
         </div>
         <div className="summary-card">
           <h3>Non-Essential Total</h3>
-          <p className="total-amount non-essential">${nonEssentialTotal.toFixed(2)}</p>
+          <p className="total-amount non-essential">${nonEssentialTotal}</p>
         </div>
         <div className="summary-card">
           <h3>Grand Total</h3>
-          <p className="total-amount grand">${(essentialTotal + nonEssentialTotal).toFixed(2)}</p>
+          <p className="total-amount grand">${(essentialTotal + nonEssentialTotal)}</p>
         </div>
       </div>
 

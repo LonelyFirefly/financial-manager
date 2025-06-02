@@ -13,5 +13,5 @@ export type {
 } from './service';
 
 // View layer exports
-export { CategoryView } from './view';
+export { categoryView } from './view';
 export type { CategorySummary, CategoryFilters, CategoryStats } from './view'; 

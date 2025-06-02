@@ -10,18 +10,23 @@ export function Categories() {
   const { categories, error, loading } = useCategories();
   const { mutate: deleteCategory } = useDeleteCategory();
 
-  const { essentialCategories, nonEssentialCategories, essentialTotal, nonEssentialTotal } = useMemo(() => {
+  const {
+    essentialCategories,
+    nonEssentialCategories,
+    essentialTotal,
+    nonEssentialTotal,
+  } = useMemo(() => {
     if (!categories) {
       return {
         essentialCategories: [],
         nonEssentialCategories: [],
         essentialTotal: 0,
-        nonEssentialTotal: 0
+        nonEssentialTotal: 0,
       };
     }
 
     const [essential, nonEssential] = getCategories(categories);
-    
+
     const essentialTotal = getTotalValue(essential);
     const nonEssentialTotal = getTotalValue(nonEssential);
 
@@ -29,17 +34,9 @@ export function Categories() {
       essentialCategories: essential,
       nonEssentialCategories: nonEssential,
       essentialTotal,
-      nonEssentialTotal
+      nonEssentialTotal,
     };
   }, [categories]);
-
-
-
-  // console.log('essentialCategories', essentialCategories);
-  // console.log('nonEssentialCategories', nonEssentialCategories);
-  // console.log('essentialTotal', essentialTotal);
-  // console.log('nonEssentialTotal', nonEssentialTotal);
-
 
   const handleEdit = (category: Category) => {
     console.log('Edit category:', category);
@@ -54,7 +51,7 @@ export function Categories() {
 
   if (loading) {
     return (
-      <div className="categories-loading">
+      <div className='categories-loading'>
         <p>Loading categories...</p>
       </div>
     );
@@ -62,42 +59,44 @@ export function Categories() {
 
   if (error) {
     return (
-      <div className="categories-error">
+      <div className='categories-error'>
         <p>Error: {error}</p>
       </div>
     );
   }
 
   return (
-    <div className="categories-container">
-      <h1 className="categories-title">Financial Categories</h1>
-      
-      <div className="categories-summary">
-        <div className="summary-card">
+    <div className='categories-container'>
+      <h1 className='categories-title'>Financial Categories</h1>
+
+      <div className='categories-summary'>
+        <div className='summary-card'>
           <h3>Essential Total</h3>
-          <p className="total-amount essential">${essentialTotal}</p>
+          <p className='total-amount essential'>${essentialTotal}</p>
         </div>
-        <div className="summary-card">
+        <div className='summary-card'>
           <h3>Non-Essential Total</h3>
-          <p className="total-amount non-essential">${nonEssentialTotal}</p>
+          <p className='total-amount non-essential'>${nonEssentialTotal}</p>
         </div>
-        <div className="summary-card">
+        <div className='summary-card'>
           <h3>Grand Total</h3>
-          <p className="total-amount grand">${(essentialTotal + nonEssentialTotal)}</p>
+          <p className='total-amount grand'>
+            ${essentialTotal + nonEssentialTotal}
+          </p>
         </div>
       </div>
 
-      <div className="categories-tables">
+      <div className='categories-tables'>
         <CategoryTable
-          title="Essential Categories"
+          title='Essential Categories'
           categories={essentialCategories}
           totalValue={essentialTotal}
           onEdit={handleEdit}
           onDelete={handleDelete}
         />
-        
+
         <CategoryTable
-          title="Non-Essential Categories"
+          title='Non-Essential Categories'
           categories={nonEssentialCategories}
           totalValue={nonEssentialTotal}
           onEdit={handleEdit}
@@ -107,7 +106,10 @@ export function Categories() {
     </div>
   );
 }
-function filterCategoriesByType(categories: Category[], type: 'essential' | 'non-essential'): Category[] {
+function filterCategoriesByType(
+  categories: Category[],
+  type: 'essential' | 'non-essential'
+): Category[] {
   return categories.filter((category: Category) => category.type === type);
 }
 
@@ -115,13 +117,9 @@ function getCategories(categories: Category[]): [Category[], Category[]] {
   const essential = filterCategoriesByType(categories, 'essential');
   const nonEssential = filterCategoriesByType(categories, 'non-essential');
 
-  return [
-    essential,
-    nonEssential
-  ]
+  return [essential, nonEssential];
 }
 
 function getTotalValue(categories: Category[]): number {
   return categories.reduce((sum, category) => sum + (category.value || 0), 0);
 }
-

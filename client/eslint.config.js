@@ -39,13 +39,6 @@ export default tseslint.config(
         'error',
         {
           zones: [
-            // Prevent imports from examples (they are just examples)
-            {
-              target: './src/**',
-              from: './src/components/examples/**',
-              message:
-                'Imports from examples directory are not allowed - these are just examples.',
-            },
             // Prevent cross-domain service imports (category service shouldn't import from other domains)
             {
               target: './src/store/category/service/**',

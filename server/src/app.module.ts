@@ -5,6 +5,7 @@ import { CategoryModule } from './category/category.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from './category/entities/category.entity';
+import { Investments } from './investments/entities/investments.entity';
 import { InvestmentsModule } from './investments/investments.module';
 
 @Module({
@@ -12,6 +13,7 @@ import { InvestmentsModule } from './investments/investments.module';
   providers: [AppService],
   imports: [
     CategoryModule,
+    InvestmentsModule,
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
@@ -23,11 +25,10 @@ import { InvestmentsModule } from './investments/investments.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      entities: [Category],
+      entities: [Category, Investments],
       synchronize: true,
       autoLoadEntities: true,
     }),
-    InvestmentsModule,
   ],
 })
 export class AppModule {}

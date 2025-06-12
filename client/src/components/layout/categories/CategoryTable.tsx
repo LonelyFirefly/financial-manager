@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 
-import { Category } from '@/models/client/category.model';
+import { CategoryClientModel } from '@/models/client/category.model';
 
-interface CategoryTableProps {
+export interface CategoryTableProps {
   title: string;
-  categories: Category[];
+  categories: CategoryClientModel.Category[];
   totalValue: number;
-  onEdit?: (category: Category) => void;
+  onEdit?: (category: CategoryClientModel.Category) => void;
   onDelete?: (categoryId: string) => void;
 }
 

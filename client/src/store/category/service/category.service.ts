@@ -1,11 +1,13 @@
+import { once } from 'lodash';
+
 import { api } from '@/api';
+
+import { RESOURCES } from './category.resources';
 import {
   CreateCategoryDto,
   UpdateCategoryDto,
   CategoryBackendDto,
 } from './dto/categories.dto';
-import { RESOURCES } from './category.resources';
-import { once } from 'lodash';
 
 class CategoriesService {
   async getCategories(): Promise<CategoryBackendDto[]> {

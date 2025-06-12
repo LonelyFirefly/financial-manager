@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
+
 import { useCategories, useDeleteCategory } from '@/hooks';
 import { CategoryClientModel } from '@/models/client/category.model';
+
 import { CategoryTable } from './CategoryTable';
 import './categories.css';
 

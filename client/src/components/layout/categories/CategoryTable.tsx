@@ -1,5 +1,6 @@
-import { Category } from '@/models/client/category.model';
 import { Link } from 'react-router-dom';
+
+import { Category } from '@/models/client/category.model';
 
 interface CategoryTableProps {
   title: string;

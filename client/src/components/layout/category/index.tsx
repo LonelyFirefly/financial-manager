@@ -1,5 +1,6 @@
-import { useCategories } from '@/hooks';
 import { useParams } from 'react-router-dom';
+
+import { useCategories } from '@/hooks';
 import './category.css';
 
 export function Category() {

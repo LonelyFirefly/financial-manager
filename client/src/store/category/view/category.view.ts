@@ -1,11 +1,13 @@
+import { once } from 'lodash';
+
 import { CategoryClientModel } from '@/models/client/category.model';
-import { categoriesService } from '../service/category.service';
+
 import {
   CreateCategoryDto,
   UpdateCategoryDto,
   CategoryBackendDto,
 } from '../service';
-import { once } from 'lodash';
+import { categoriesService } from '../service/category.service';
 
 type Category = CategoryClientModel.Category;
 

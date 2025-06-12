@@ -41,36 +41,34 @@ export class CategoryView {
   /**
    * Transform backend category to frontend category
    */
-  private transformCategory = (
-    backendCategory: CategoryBackendDto
-  ): Category => {
+  public transformCategory(backendCategory: CategoryBackendDto): Category {
     return {
       ...backendCategory,
       value: parseFloat(backendCategory.value) || 0, // Convert string to number
     };
-  };
+  }
 
   /**
    * Transform array of backend categories to frontend categories
    */
-  private transformCategories = (
+  private _transformCategories(
     backendCategories: CategoryBackendDto[]
-  ): Category[] => {
+  ): Category[] {
     return backendCategories.map(category => this.transformCategory(category));
-  };
+  }
 
   /**
    * Get all categories from service with transformation
    */
-  public getCategories = async (): Promise<Category[]> => {
+  public async getCategories(): Promise<Category[]> {
     const backendCategories = await categoriesService.getCategories();
-    return this.transformCategories(backendCategories);
-  };
+    return this._transformCategories(backendCategories);
+  }
 
   /**
    * Get category by ID from service with transformation
    */
-  static async getCategoryById(id: string): Promise<Category> {
+  public async getCategoryById(id: string): Promise<Category> {
     const backendCategory = await categoriesService.getCategoryById(id);
     return this.transformCategory(backendCategory);
   }
@@ -78,7 +76,7 @@ export class CategoryView {
   /**
    * Create a new category using service with transformation
    */
-  static async createCategory(data: CreateCategoryDto): Promise<Category> {
+  public async createCategory(data: CreateCategoryDto): Promise<Category> {
     const backendCategory = await categoriesService.createCategory(data);
     return this.transformCategory(backendCategory);
   }
@@ -86,17 +84,17 @@ export class CategoryView {
   /**
    * Create multiple categories using service with transformation
    */
-  static async createCategories(
+  public async createCategories(
     data: CreateCategoryDto[]
   ): Promise<Category[]> {
     const backendCategories = await categoriesService.createCategories(data);
-    return this.transformCategories(backendCategories);
+    return this._transformCategories(backendCategories);
   }
 
   /**
    * Update category using service with transformation
    */
-  static async updateCategory(
+  public async updateCategory(
     id: string,
     data: UpdateCategoryDto
   ): Promise<Category> {
@@ -114,32 +112,32 @@ export class CategoryView {
   /**
    * Get categories by status from service with transformation
    */
-  static async getCategoriesByStatus(isArchived: boolean): Promise<Category[]> {
+  public async getCategoriesByStatus(isArchived: boolean): Promise<Category[]> {
     const backendCategories = await categoriesService.getCategoriesByStatus(
       isArchived
     );
-    return this.transformCategories(backendCategories);
+    return this._transformCategories(backendCategories);
   }
 
   /**
    * Search categories using service with transformation
    */
-  static async searchCategories(query: string): Promise<Category[]> {
+  public async searchCategories(query: string): Promise<Category[]> {
     const backendCategories = await categoriesService.searchCategories(query);
-    return this.transformCategories(backendCategories);
+    return this._transformCategories(backendCategories);
   }
 
   /**
    * Get categories count from service
    */
-  static async getCategoriesCount(): Promise<number> {
+  public async getCategoriesCount(): Promise<number> {
     return categoriesService.getCategoriesCount();
   }
 
   /**
    * Get categories count by status from service
    */
-  static async getCategoriesCountByStatus(
+  public async getCategoriesCountByStatus(
     isArchived: boolean
   ): Promise<number> {
     return categoriesService.getCategoriesCountByStatus(isArchived);
@@ -148,7 +146,7 @@ export class CategoryView {
   /**
    * Get categories with summary calculations
    */
-  static async getCategorySummary(): Promise<CategorySummary> {
+  public async getCategorySummary(): Promise<CategorySummary> {
     const categories = await this.getCategories();
     return this.calculateSummary(categories);
   }
@@ -156,7 +154,7 @@ export class CategoryView {
   /**
    * Get categories with detailed statistics
    */
-  static async getCategoryStats(): Promise<CategoryStats> {
+  public async getCategoryStats(): Promise<CategoryStats> {
     const categories = await this.getCategories();
     const summary = this.calculateSummary(categories);
     const averageValue =
@@ -179,7 +177,7 @@ export class CategoryView {
   /**
    * Get filtered categories
    */
-  static async getFilteredCategories(
+  public async getFilteredCategories(
     filters: CategoryFilters
   ): Promise<Category[]> {
     const categories = await this.getCategories();
@@ -189,7 +187,7 @@ export class CategoryView {
   /**
    * Get categories sorted by name
    */
-  static async getCategoriesSortedByName(
+  public async getCategoriesSortedByName(
     ascending: boolean = true
   ): Promise<Category[]> {
     const categories = await this.getCategories();
@@ -199,7 +197,7 @@ export class CategoryView {
   /**
    * Get categories sorted by value
    */
-  static async getCategoriesSortedByValue(
+  public async getCategoriesSortedByValue(
     ascending: boolean = true
   ): Promise<Category[]> {
     const categories = await this.getCategories();
@@ -209,21 +207,21 @@ export class CategoryView {
   /**
    * Get categories that need attention
    */
-  static async getCategoriesNeedingAttention(): Promise<{
+  public async getCategoriesNeedingAttention(): Promise<{
     highValue: Category[];
     archived: Category[];
   }> {
     const categories = await this.getCategories();
     return {
-      highValue: categories.filter(category =>
+      highValue: categories.filter((category: Category) =>
         this.isHighValueCategory(category)
       ),
-      archived: categories.filter(category => category.isArchived),
+      archived: categories.filter((category: Category) => category.isArchived),
     };
   }
 
   // Private utility methods for data transformation
-  private static calculateSummary(categories: Category[]): CategorySummary {
+  private calculateSummary(categories: Category[]): CategorySummary {
     const essentialCategories = this.filterByType(categories, 'essential');
     const nonEssentialCategories = this.filterByType(
       categories,
@@ -245,21 +243,21 @@ export class CategoryView {
     };
   }
 
-  private static filterByType(
+  private filterByType(
     categories: Category[],
     type: 'essential' | 'non-essential'
   ): Category[] {
     return categories.filter(category => category.type === type);
   }
 
-  private static filterByArchived(
+  private filterByArchived(
     categories: Category[],
     isArchived: boolean
   ): Category[] {
     return categories.filter(category => category.isArchived === isArchived);
   }
 
-  private static searchCategoriesByQuery(
+  private searchCategoriesByQuery(
     categories: Category[],
     query: string
   ): Category[] {
@@ -271,7 +269,7 @@ export class CategoryView {
     );
   }
 
-  private static applyFilters(
+  private applyFilters(
     categories: Category[],
     filters: CategoryFilters
   ): Category[] {
@@ -292,11 +290,11 @@ export class CategoryView {
     return filtered;
   }
 
-  private static calculateTotal(categories: Category[]): number {
+  private calculateTotal(categories: Category[]): number {
     return categories.reduce((sum, category) => sum + (category.value || 0), 0);
   }
 
-  private static sortByName(
+  private sortByName(
     categories: Category[],
     ascending: boolean = true
   ): Category[] {
@@ -306,7 +304,7 @@ export class CategoryView {
     });
   }
 
-  private static sortByValue(
+  private sortByValue(
     categories: Category[],
     ascending: boolean = true
   ): Category[] {
@@ -316,7 +314,7 @@ export class CategoryView {
     });
   }
 
-  private static isHighValueCategory(
+  private isHighValueCategory(
     category: Category,
     threshold: number = 1000
   ): boolean {
@@ -326,7 +324,7 @@ export class CategoryView {
   /**
    * Format currency value for display
    */
-  static formatCurrency(value: number, currency: string = 'USD'): string {
+  public formatCurrency(value: number, currency: string = 'USD'): string {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency,

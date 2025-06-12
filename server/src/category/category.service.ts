@@ -60,9 +60,7 @@ export class CategoryService {
     return this.categoryRepository.delete(id);
   }
 
-  async getTotalCategoryValue(filters?: {
-    isArchived?: boolean;
-  }): Promise<number> {
+  async getTotalCategoryValue(filters?: { isArchived?: boolean }): Promise<number> {
     const { isArchived = false } = filters || {};
 
     const categories = await this.categoryRepository.find({

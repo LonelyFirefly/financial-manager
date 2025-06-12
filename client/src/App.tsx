@@ -4,16 +4,14 @@ import { StrictMode } from 'react';
 import { queryClient } from '@/api';
 import Router from '@/router';
 
-import './App.css'
-
 function App() {
   return (
-     <StrictMode>
+    <StrictMode>
       <QueryClientProvider client={queryClient}>
         <Router />
       </QueryClientProvider>
     </StrictMode>
-  )
+  );
 }
 
-export default App
+export default App;

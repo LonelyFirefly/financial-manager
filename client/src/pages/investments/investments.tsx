@@ -1,7 +1,13 @@
+import { Button } from '@/components/ui/button';
+
 export function InvestmentsPage() {
   return <InvestmentsTable />;
 }
 
 function InvestmentsTable() {
-  return <div>InvestmentsTable</div>;
+  return (
+    <div>
+      <Button>Click me</Button>
+    </div>
+  );
 }

@@ -1,7 +1,13 @@
 import { RouteObject } from 'react-router-dom';
-import { CategoriesPage, CategoryPage, NotFoundPage } from '@/pages';
 
-export const routerConfig: RouteObject[] = [
+import {
+  CategoriesPage,
+  CategoryPage,
+  InvestmentsPage,
+  NotFoundPage,
+} from '@/pages';
+
+const routerFactory: RouteObject[] = [
   {
     path: '/categories',
     element: <CategoriesPage />,
@@ -11,7 +17,13 @@ export const routerConfig: RouteObject[] = [
     element: <CategoryPage />,
   },
   {
+    path: '/investments',
+    element: <InvestmentsPage />,
+  },
+  {
     path: '*',
     element: <NotFoundPage />,
   },
 ];
+
+export default routerFactory;

@@ -1,19 +1,17 @@
 import { RouteObject } from 'react-router-dom';
-import { Categories, Category } from '@/components/layout';
-
-const NotFound = () => null;
+import { CategoriesPage, CategoryPage, NotFoundPage } from '@/pages';
 
 export const routerConfig: RouteObject[] = [
   {
     path: '/categories',
-    element: <Categories />,
+    element: <CategoriesPage />,
   },
   {
     path: '/categories/:id',
-    element: <Category />,
+    element: <CategoryPage />,
   },
   {
     path: '*',
-    element: <NotFound />,
+    element: <NotFoundPage />,
   },
 ];

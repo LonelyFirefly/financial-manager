@@ -3,6 +3,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/api';
 import { CategoryClientModel } from '@/models';
 import { categoryView } from '@/store';
+import { bindViewMethod } from '@/store/common';
 
 // Query Keys
 export const categoryQueryKeys = {
@@ -31,7 +32,7 @@ export function useCategories() {
     isError,
   } = useQuery<CategoryClientModel.Category[], Error>({
     queryKey: categoryQueryKeys.all,
-    queryFn: categoryView.getCategories,
+    queryFn: bindViewMethod(categoryView, 'getCategories'),
   });
 
   return {

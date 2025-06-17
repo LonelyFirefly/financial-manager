@@ -49,15 +49,6 @@ export class CategoryView {
   }
 
   /**
-   * Transform array of backend categories to frontend categories
-   */
-  private _transformCategories(
-    backendCategories: CategoryBackendDto[]
-  ): Category[] {
-    return backendCategories.map(category => this.transformCategory(category));
-  }
-
-  /**
    * Get all categories from service with transformation
    */
   public async getCategories(): Promise<Category[]> {
@@ -218,6 +209,15 @@ export class CategoryView {
       ),
       archived: categories.filter((category: Category) => category.isArchived),
     };
+  }
+
+  /**
+   * Transform array of backend categories to frontend categories
+   */
+  private _transformCategories(
+    backendCategories: CategoryBackendDto[]
+  ): Category[] {
+    return backendCategories.map(category => this.transformCategory(category));
   }
 
   // Private utility methods for data transformation

@@ -7,6 +7,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from './category/entities/category.entity';
 import { Investments } from './investments/entities/investments.entity';
 import { InvestmentsModule } from './investments/investments.module';
+import { UserModule } from './user/user.module';
+import { User } from './user/entities/user.entity';
+import { Token } from './user/entities/token.entity';
 
 @Module({
   controllers: [AppController],
@@ -14,6 +17,7 @@ import { InvestmentsModule } from './investments/investments.module';
   imports: [
     CategoryModule,
     InvestmentsModule,
+    UserModule,
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
@@ -25,7 +29,7 @@ import { InvestmentsModule } from './investments/investments.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      entities: [Category, Investments],
+      entities: [Category, Investments, User, Token],
       synchronize: true,
       autoLoadEntities: true,
     }),

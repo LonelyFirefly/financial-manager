@@ -37,6 +37,7 @@ export interface CategoryStats extends CategorySummary {
   nonEssentialPercentage: number;
 }
 
+// @todo: inject category service as a dependency using Dependency Injection
 export class CategoryView {
   /**
    * Transform backend category to frontend category
